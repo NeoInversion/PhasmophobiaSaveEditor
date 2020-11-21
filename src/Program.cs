@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PhasmophobiaSaveEditor
 {
@@ -7,7 +9,7 @@ namespace PhasmophobiaSaveEditor
     {
         static void Main(string[] args)
         {
-            string DeserializeSaveData(string input)
+            string ConvertSaveData(string input)
             {
                 string xorConst = "CHANGE ME TO YOUR OWN RANDOM STRING";
                 string output = "";
@@ -21,20 +23,40 @@ namespace PhasmophobiaSaveEditor
             }
 
             StreamReader reader = new StreamReader(@"C:\Users\" + Environment.UserName + @"\AppData\LocalLow\Kinetic Games\Phasmophobia\saveData.txt");
-            StreamWriter writer = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), "saveDataExport.json"));
+            StreamWriter writer = new StreamWriter(@"C:\Users\" + Environment.UserName + @"\AppData\LocalLow\Kinetic Games\Phasmophobia\EditedSaveData.txt");
             var saveData = reader.ReadToEnd();
-            var parsedSaveData = DeserializeSaveData(saveData);
+            var parsedSaveData = ConvertSaveData(saveData);
+            var jsonData = JsonConvert.DeserializeObject<Dictionary<dynamic, dynamic>>(parsedSaveData);
 
-            Console.WriteLine(parsedSaveData);
-            Console.WriteLine("Export save data?");
-
-            var read = Console.ReadLine();
-            if (read.ToLower()[0] == 'y')
+            foreach (var v in jsonData)
             {
-                writer.Write(parsedSaveData);
-                writer.Close();
-                Console.WriteLine("Successfully wrote to saveDataExport.json");
+                if (v.Key == "StringData")
+                {
+                    foreach (var dataArray in v.Value)
+                    {
+                        Console.WriteLine(dataArray.Key + ": " + dataArray.Value);
+                        Console.WriteLine("Enter new value:");
+                        var read = Console.ReadLine();
+                        dataArray.Value = read;
+                    }
+                }
+                else if (v.Key == "IntData")
+                {
+                    foreach (var dataArray in v.Value)
+                    {
+                        Console.WriteLine(dataArray.Key + ": " + dataArray.Value);
+                        Console.WriteLine("Enter new value:");
+                        var read = Console.ReadLine();
+                        dataArray.Value = Convert.ToInt32(read);
+                    }
+                }
             }
+
+
+            writer.Write(ConvertSaveData(JsonConvert.SerializeObject(jsonData)));
+            writer.Close();
+
+            Console.WriteLine("Success! You can find the edited save data under the name 'EditedSaveData.txt'");
 
             Console.WriteLine("Press enter to exit.");
             Console.ReadKey();
