@@ -52,7 +52,6 @@ namespace PhasmophobiaSaveEditor
                 }
             }
 
-
             writer.Write(ConvertSaveData(JsonConvert.SerializeObject(jsonData)));
             writer.Close();
 
