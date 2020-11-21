@@ -32,6 +32,7 @@ namespace PhasmophobiaSaveEditor
             if (read.ToLower()[0] == 'y')
             {
                 writer.Write(parsedSaveData);
+                writer.Close();
                 Console.WriteLine("Successfully wrote to saveDataExport.json");
             }
 
