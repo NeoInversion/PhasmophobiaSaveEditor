@@ -9,9 +9,8 @@ namespace PhasmophobiaSaveEditor
     {
         static void Main(string[] args)
         {
-            string ConvertSaveData(string input)
+            string ConvertSaveData(string input, string xorConst)
             {
-                string xorConst = "CHANGE ME TO YOUR OWN RANDOM STRING";
                 string output = "";
 
                 for (int i = 0; i < input.Length; i++)
@@ -25,7 +24,7 @@ namespace PhasmophobiaSaveEditor
             StreamReader reader = new StreamReader(@"C:\Users\" + Environment.UserName + @"\AppData\LocalLow\Kinetic Games\Phasmophobia\saveData.txt");
             StreamWriter writer = new StreamWriter(@"C:\Users\" + Environment.UserName + @"\AppData\LocalLow\Kinetic Games\Phasmophobia\EditedSaveData.txt");
             var saveData = reader.ReadToEnd();
-            var parsedSaveData = ConvertSaveData(saveData);
+            var parsedSaveData = ConvertSaveData(saveData, "CHANGE ME TO YOUR OWN RANDOM STRING");
             var jsonData = JsonConvert.DeserializeObject<Dictionary<dynamic, dynamic>>(parsedSaveData);
 
             foreach (var v in jsonData)
@@ -52,7 +51,7 @@ namespace PhasmophobiaSaveEditor
                 }
             }
 
-            writer.Write(ConvertSaveData(JsonConvert.SerializeObject(jsonData)));
+            writer.Write(ConvertSaveData(JsonConvert.SerializeObject(jsonData), "CHANGE ME TO YOUR OWN RANDOM STRING"));
             writer.Close();
 
             Console.WriteLine("Success! You can find the edited save data under the name 'EditedSaveData.txt'");
