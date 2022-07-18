@@ -1,4 +1,9 @@
-# PhasmophobiaSaveEditor
+# Notice
+Since the end of March 2021, this is no longer usable without obtaining an older format of the game's save data and modifying it to your liking. Once you've done this, delete the newly converted save data and replace it with the old version that you just modified.
+
+Details and an older version of save data can be found here: https://www.phasmosaveedit.xyz.
+
+## PhasmophobiaSaveEditor
 C# application to read/parse and edit save data for the game Phasmophobia.
 
 ## About
